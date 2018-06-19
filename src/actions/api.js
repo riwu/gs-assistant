@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-const [post] = ['post'].map(method => (path, data) =>
+const [post] = ['post'].map(method => (path, data, options) =>
   axios({
     method,
     url: path,
     data,
+    ...options,
   }).then(response => response.data));
 
 const GOOGLE_API_KEY_PARAM = `?key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
@@ -39,6 +40,9 @@ export const speechToText = content =>
   });
 
 export const getSummarization = text =>
-  post(`https://api.meaningcloud.com/summarization-1.0?key=${
-    process.env.SUMMARIZATION_KEY
-  }&sentences=2&txt=${encodeURIComponent(text)}`);
+  post('https://api.algorithmia.com/v1/web/algo/nlp/Summarizer/0.1.7', text, {
+    headers: {
+      Authorization: process.env.REACT_APP_SUMMARIZATION_KEY,
+      'Content-Type': 'text/plain',
+    },
+  });

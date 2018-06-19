@@ -7,7 +7,7 @@ class Summarization extends React.Component {
   };
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
-      getSummarization(this.props.data).then(data => this.setState({ summary: data.summary }));
+      getSummarization(this.props.data).then(data => this.setState({ summary: data.result }));
     }
   }
   render() {
