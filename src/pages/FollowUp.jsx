@@ -5,14 +5,14 @@ import moment from 'moment';
 
 const FollowUp = (props) => {
   const results = chrono.parse(props.data);
-  const actions = results.map(result => ({
-    date: moment(result.start.date()).format('DD MMM YY, hh:mm a'),
-  }));
+  const dates = results.map(result =>
+    moment(result.start.date()).format('DD MMM YY, hh:mm a') +
+      (result.end ? ` - ${moment(result.end.date()).format('hh:mm a')}` : ''));
 
   return (
     <Table
       pagination={{ hideOnSinglePage: true }}
-      dataSource={actions}
+      dataSource={[...new Set(dates)].map(date => ({ date }))}
       rowKey="date"
       columns={[
         { title: 'Date', dataIndex: 'date' },
@@ -22,7 +22,7 @@ const FollowUp = (props) => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`mailto:riwu@gs.com?subject=${encodeURIComponent(`Meeting at ${obj.date}`)}`}
+              href={`mailto:riwu@gs.com?subject=${encodeURIComponent(`Meeting on ${obj.date}`)}`}
             >
               Setup meeting
             </a>
