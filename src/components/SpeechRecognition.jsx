@@ -16,8 +16,11 @@ recognition.interimResults = true;
 class SpeechRecognition extends React.Component {
   state = {
     started: false,
+    command: '',
   };
   componentDidMount() {
+    recognition.start();
+
     recognition.onresult = (event) => {
       let results = '';
       for (const result of event.results) {
@@ -27,47 +30,51 @@ class SpeechRecognition extends React.Component {
       console.log('results', results, event.results[0].isFinal);
 
       if (!event.results[0].isFinal) {
-        this.props.onChange(results, false);
+        if (this.state.started) {
+          this.props.onChange(results, false);
+        }
         return;
       }
 
-      if (results.includes('stop recording')) {
+      if (!this.state.started) {
+        this.setState({ command: results });
+      }
+
+      if (results.includes('start recording')) {
+        console.log('start recording');
+        this.setState({ started: true, command: results });
+      } else if (results.includes('stop recording')) {
         console.log('stopping');
-        this.setState({ started: false });
-        this.started = false;
-        recognition.stop();
+        this.setState({ started: false, command: results });
+        this.props.onStop();
       } else if (results.includes('reset recording')) {
         console.log('resetting');
+        this.setState({ command: results });
         this.props.onReset();
-      } else {
+      } else if (this.state.started) {
         this.props.onChange(results, true);
       }
     };
 
     recognition.onend = () => {
-      console.log('ended', this.started);
-      if (this.started) {
-        recognition.start();
-      } else {
-        this.props.onStop();
-      }
+      recognition.start();
     };
   }
   render() {
     return (
-      <Button
-        onClick={() => {
-          if (this.state.started) {
-            recognition.stop();
-          } else {
-            recognition.start();
-          }
-          this.started = !this.started;
-          this.setState(prevState => ({ started: !prevState.started }));
-        }}
-      >
-        {this.state.started ? 'Stop' : 'Start'}
-      </Button>
+      <div>
+        <Button
+          onClick={() => {
+            if (this.state.started) {
+              this.props.onStop();
+            }
+            this.setState(prevState => ({ started: !prevState.started }));
+          }}
+        >
+          {this.state.started ? 'Stop' : 'Start'}
+        </Button>
+        <div>Received voice command: {this.state.command}</div>
+      </div>
     );
   }
 }

@@ -18,7 +18,7 @@ class App extends React.Component {
     this.setFinalTranscript = this.setFinalTranscript.bind(this);
   }
   setFinalTranscript() {
-    this.setState(prevState => ({ finalTranscript: prevState.transcript }));
+    this.setState(prevState => ({ finalTranscript: prevState.transcript, interimTranscript: '' }));
   }
   render() {
     return (
