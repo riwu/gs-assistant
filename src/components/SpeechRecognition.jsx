@@ -11,8 +11,7 @@ const BrowserSpeechRecognition =
 
 const recognition = new BrowserSpeechRecognition();
 recognition.lang = 'en-GB';
-// recognition.continuous = true;
-// recognition.interimResults = true;
+recognition.interimResults = true;
 
 class SpeechRecognition extends React.Component {
   state = {
@@ -25,7 +24,12 @@ class SpeechRecognition extends React.Component {
         results += result[0].transcript;
       }
 
-      console.log('results', results);
+      console.log('results', results, event.results[0].isFinal);
+
+      if (!event.results[0].isFinal) {
+        this.props.onChange(results, false);
+        return;
+      }
 
       if (results.includes('stop recording')) {
         console.log('stopping');
@@ -33,6 +37,7 @@ class SpeechRecognition extends React.Component {
         this.started = false;
         recognition.stop();
       } else if (results.includes('reset recording')) {
+        console.log('resetting');
         this.props.onReset();
       } else {
         this.props.onChange(results, true);

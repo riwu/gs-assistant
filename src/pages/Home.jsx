@@ -24,12 +24,12 @@ class App extends React.Component {
     return (
       <div className={styles.container}>
         <SpeechRecognition
-          onReset={() => this.setState({ transcript: '' })}
+          onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
           onChange={(transcript, isFinal) =>
             this.setState((prevState) => {
               if (isFinal) {
                 return {
-                  transcript: `${prevState.transcript} ${transcript}`,
+                  transcript: `${prevState.transcript}${transcript}. `,
                   interimTranscript: '',
                 };
               }
