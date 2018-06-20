@@ -1,9 +1,10 @@
 import React from 'react';
 import { Input, Button, Tabs } from 'antd';
 import SpeechRecognition from '../components/SpeechRecognition';
+import Translation from '../components/Translation';
 import Classification from './Classification';
 import Summarization from './Summarization';
-import Translation from '../components/Translation';
+import FollowUp from './FollowUp';
 import styles from './Home.module.css';
 
 class App extends React.Component {
@@ -52,6 +53,7 @@ class App extends React.Component {
           {[
             { Component: Classification, label: 'Topics' },
             { Component: Summarization, label: 'Summarization' },
+            { Component: FollowUp, label: 'Follow-up' },
           ].map(tab => (
             <Tabs.TabPane tab={tab.label} key={tab.label} forceRender>
               <tab.Component data={this.state.finalTranscript} />
