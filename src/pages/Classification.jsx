@@ -29,18 +29,18 @@ class Classification extends React.Component {
           <Table
             pagination={{ hideOnSinglePage: true }}
             dataSource={topics[selectedRow.name] || relevantTopics}
-            rowKey="name"
+            rowKey="topic"
             columns={[
-                { title: 'Similar Topics', render: row => <a>{row.topic}</a> },
-                { title: 'Relevance', dataIndex: 'relevance' },
-              ]}
+              { title: 'Similar Topics', dataIndex: 'topic', render: topic => <a>{topic}</a> }, // eslint-disable-line jsx-a11y/anchor-is-valid
+              { title: 'Relevance', dataIndex: 'relevance' },
+            ]}
           />
-          )}
+        )}
         pagination={{ hideOnSinglePage: true }}
         dataSource={this.state.categories}
         rowKey="name"
         columns={[
-          { title: 'Category', render: row => <a>{row.name}</a> },
+          { title: 'Category', dataIndex: 'name', render: name => <a>{name}</a> }, // eslint-disable-line jsx-a11y/anchor-is-valid
           { title: 'Confidence', dataIndex: 'confidence' },
         ]}
       />

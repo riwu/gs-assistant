@@ -41,7 +41,7 @@ class Translation extends React.Component {
             <Select.Option key={language.code}>{language.label}</Select.Option>
           ))}
         </Select>
-        <div>{this.state.translations[this.state.selectedLanguage]}</div>
+        <div>{this.props.data && this.state.translations[this.state.selectedLanguage]}</div>
       </div>
     );
   }
