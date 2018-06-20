@@ -27,24 +27,33 @@ class SpeechRecognition extends React.Component {
 
       console.log('results', results);
 
-      this.props.onChange(results, true);
+      if (results.includes('stop recording')) {
+        console.log('stopping');
+        this.setState({ started: false });
+        this.started = false;
+        recognition.stop();
+      } else if (results.includes('reset recording')) {
+        this.props.onReset();
+      } else {
+        this.props.onChange(results, true);
+      }
     };
 
     recognition.onend = () => {
       console.log('ended', this.started);
       if (this.started) {
         recognition.start();
+      } else {
+        this.props.onStop();
       }
     };
   }
   render() {
-    const { props } = this;
     return (
       <Button
         onClick={() => {
           if (this.state.started) {
             recognition.stop();
-            props.onStop();
           } else {
             recognition.start();
           }

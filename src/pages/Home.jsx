@@ -24,6 +24,7 @@ class App extends React.Component {
     return (
       <div className={styles.container}>
         <SpeechRecognition
+          onReset={() => this.setState({ transcript: '' })}
           onChange={(transcript, isFinal) =>
             this.setState((prevState) => {
               if (isFinal) {
