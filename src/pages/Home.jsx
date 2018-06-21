@@ -40,16 +40,21 @@ class App extends React.Component {
           }
           onStop={this.setFinalTranscript}
         />
-        <h3 className={styles.header}>Transcription</h3>
-        <Input.TextArea
-          autosize
-          value={this.state.transcript + this.state.interimTranscript}
-          onChange={e => this.setState({ transcript: e.target.value })}
+        <div className={styles.component}>
+          <h3>Transcription</h3>
+          <Input.TextArea
+            autosize
+            value={this.state.transcript + this.state.interimTranscript}
+            onChange={e => this.setState({ transcript: e.target.value })}
+          />
+          <Button className={styles.submitButton} type="primary" onClick={this.setFinalTranscript}>
+            Submit
+          </Button>
+        </div>
+        <Translation
+          className={`${styles.translation} ${styles.component}`}
+          data={this.state.transcript}
         />
-        <Button className={styles.submitButton} type="primary" onClick={this.setFinalTranscript}>
-          Submit
-        </Button>
-        <Translation className={styles.translation} data={this.state.transcript} />
 
         <Tabs onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
           {[
