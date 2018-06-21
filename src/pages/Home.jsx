@@ -56,7 +56,7 @@ class App extends React.Component {
           data={this.state.transcript}
         />
 
-        <Tabs onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+        <Tabs mode="horizontal">
           {[
             { Component: Classification, label: 'Topics' },
             { Component: Summarization, label: 'Summarization' },
