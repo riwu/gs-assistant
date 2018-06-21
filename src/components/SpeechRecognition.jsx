@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import styles from './SpeechRecognition.module.css';
 
 const BrowserSpeechRecognition =
   typeof window !== 'undefined' &&
@@ -18,6 +19,7 @@ class SpeechRecognition extends React.Component {
     started: false,
     command: '',
   };
+
   componentDidMount() {
     recognition.start();
 
@@ -37,19 +39,21 @@ class SpeechRecognition extends React.Component {
       }
 
       if (!this.state.started) {
-        this.setState({ command: results });
+        this.setVoiceCommand(results);
       }
 
       if (results.includes('start recording')) {
         console.log('start recording');
-        this.setState({ started: true, command: results });
+        this.setState({ started: true });
+        this.setVoiceCommand(results);
       } else if (results.includes('stop recording')) {
         console.log('stopping');
-        this.setState({ started: false, command: results });
+        this.setState({ started: false });
+        this.setVoiceCommand(results);
         this.props.onStop();
       } else if (results.includes('reset recording')) {
         console.log('resetting');
-        this.setState({ command: results });
+        this.setVoiceCommand(results);
         this.props.onReset();
       } else if (this.state.started) {
         this.props.onChange(results, true);
@@ -60,10 +64,19 @@ class SpeechRecognition extends React.Component {
       recognition.start();
     };
   }
+
+  setVoiceCommand = (command) => {
+    this.setState({ command });
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ command: '' }), 1900);
+  };
   render() {
     return (
       <div>
         <Button
+          style={{ color: this.state.started ? 'red' : 'green' }}
+          size="large"
+          icon={this.state.started ? 'close-circle' : 'play-circle'}
           onClick={() => {
             if (this.state.started) {
               this.props.onStop();
@@ -71,9 +84,11 @@ class SpeechRecognition extends React.Component {
             this.setState(prevState => ({ started: !prevState.started }));
           }}
         >
-          {this.state.started ? 'Stop' : 'Start'}
+          {this.state.started ? 'Stop recording' : 'Start recording'}
         </Button>
-        <div>Received voice command: {this.state.command}</div>
+        {this.state.command && (
+          <span className={styles.commandText}>Received voice command: {this.state.command}</span>
+        )}
       </div>
     );
   }

@@ -1,0 +1,18 @@
+.commandText {
+  -webkit-animation: fade 2s 100ms;
+  animation: fade 2s 100ms;
+  color: blue;
+  margin-left: 20px;
+}
+
+@-webkit-keyframes fade {
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  100% {
+    opacity: 0;
+  }
+}

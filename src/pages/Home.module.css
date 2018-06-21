@@ -1,3 +1,16 @@
 .container {
   margin: 20px 10%;
 }
+
+.header {
+  margin-top: 20px;
+}
+
+.submitButton {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.translation {
+  margin-bottom: 20px;
+}

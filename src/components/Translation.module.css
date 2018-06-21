@@ -1,0 +1,7 @@
+.headerContainer {
+  display: flex;
+}
+
+.select {
+  margin-left: 10px;
+}
