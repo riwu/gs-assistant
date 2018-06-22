@@ -48,19 +48,15 @@ class SpeechRecognition extends React.Component {
         return;
       }
 
-      if (
-        results.includes('start recording') ||
-        (results.includes('stop recording') && !this.state.started)
-      ) {
-        console.log('start recording');
-        this.setState({ started: true });
-        this.setVoiceCommand('recording started', true);
-      } else if (results.includes('stop recording')) {
-        console.log('stopping');
-        this.setState({ started: false });
-        this.setVoiceCommand('recording stopped', true);
-        this.props.onStop();
-      } else if (results.includes('reset recording')) {
+      const matchStartOrStopRecording = results.search(/(start|stop)s? recording/) > -1;
+      if (matchStartOrStopRecording) {
+        console.log('starting/stopping recording');
+        if (this.state.started) {
+          this.props.onStop();
+        }
+        this.setVoiceCommand(`recording ${this.state.started ? 'stopped' : 'started'}`, true);
+        this.setState(prevState => ({ started: !prevState.started }));
+      } else if (results.search('resets? recording') > -1) {
         console.log('resetting');
         this.setVoiceCommand('recording reset', true);
         this.props.onReset();
