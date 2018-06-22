@@ -1,6 +1,6 @@
 .commandText {
-  -webkit-animation: fade 2s 100ms;
-  animation: fade 2s 100ms;
+  -webkit-animation: fade 4s 200ms;
+  animation: fade 4s 200ms;
   color: blue;
   margin-left: 20px;
 }

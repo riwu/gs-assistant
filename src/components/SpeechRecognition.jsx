@@ -2,6 +2,16 @@ import React from 'react';
 import { Button } from 'antd';
 import styles from './SpeechRecognition.module.css';
 
+const synth = window.speechSynthesis;
+const utter = new SpeechSynthesisUtterance();
+window.speechSynthesis.onvoiceschanged = () => {
+  synth.getVoices().forEach((voice) => {
+    if (voice.name === 'Google US English') {
+      utter.voice = voice;
+    }
+  });
+};
+
 const BrowserSpeechRecognition =
   typeof window !== 'undefined' &&
   (window.SpeechRecognition ||
@@ -38,37 +48,52 @@ class SpeechRecognition extends React.Component {
         return;
       }
 
-      if (!this.state.started) {
-        this.setVoiceCommand(results);
-      }
-
-      if (results.includes('start recording')) {
+      if (
+        results.includes('start recording') ||
+        (results.includes('stop recording') && !this.state.started)
+      ) {
         console.log('start recording');
         this.setState({ started: true });
-        this.setVoiceCommand(results);
+        this.setVoiceCommand('recording started', true);
       } else if (results.includes('stop recording')) {
         console.log('stopping');
         this.setState({ started: false });
-        this.setVoiceCommand(results);
+        this.setVoiceCommand('recording stopped', true);
         this.props.onStop();
       } else if (results.includes('reset recording')) {
         console.log('resetting');
-        this.setVoiceCommand(results);
+        this.setVoiceCommand('recording reset', true);
         this.props.onReset();
       } else if (this.state.started) {
         this.props.onChange(results, true);
+      } else {
+        this.setVoiceCommand(results);
       }
     };
 
     recognition.onend = () => {
-      recognition.start();
+      if (!this.stopRecognition) {
+        recognition.start();
+      }
     };
   }
 
-  setVoiceCommand = (command) => {
+  setVoiceCommand = (command, isValid) => {
     this.setState({ command });
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ command: '' }), 1900);
+    this.timeout = setTimeout(() => this.setState({ command: '' }), 3900);
+
+    if (isValid) {
+      utter.text = command;
+      synth.speak(utter);
+      this.stopRecognition = true;
+      recognition.abort();
+      utter.onend = () => {
+        console.log('ended');
+        this.stopRecognition = false;
+        recognition.start();
+      };
+    }
   };
   render() {
     return (
