@@ -1,5 +1,7 @@
 .container {
-  margin: 20px 10%;
+  background: #f4f4f4;
+  padding: 20px 10%;
+  height: 100%;
 }
 
 .submitButton {
@@ -11,8 +13,5 @@
 }
 
 .component {
-  border: 1px solid lightgrey;
-  padding: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }

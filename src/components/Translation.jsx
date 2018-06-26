@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select } from 'antd';
+import { Select, Card } from 'antd';
 import { getTranslation } from '../actions/api';
 import styles from './Translation.module.css';
 
@@ -33,21 +33,25 @@ class Translation extends React.Component {
   }
   render() {
     return (
-      <div className={this.props.className}>
-        <div className={styles.headerContainer}>
-          <h3>Translation</h3>
-          <Select
-            className={styles.select}
-            defaultValue={LANGUAGES[0].code}
-            onChange={code => this.setState({ selectedLanguage: code })}
-          >
-            {LANGUAGES.map(language => (
-              <Select.Option key={language.code}>{language.label}</Select.Option>
-            ))}
-          </Select>
-        </div>
-        <div>{this.props.data && this.state.translations[this.state.selectedLanguage]}</div>
-      </div>
+      <Card
+        title={
+          <div className={styles.headerContainer}>
+            <h3>Translation</h3>
+            <Select
+              className={styles.select}
+              defaultValue={LANGUAGES[0].code}
+              onChange={code => this.setState({ selectedLanguage: code })}
+            >
+              {LANGUAGES.map(language => (
+                <Select.Option key={language.code}>{language.label}</Select.Option>
+              ))}
+            </Select>
+          </div>
+        }
+        className={this.props.className}
+      >
+        {this.props.data && this.state.translations[this.state.selectedLanguage]}
+      </Card>
     );
   }
 }

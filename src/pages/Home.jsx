@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Tabs } from 'antd';
+import { Input, Button, Tabs, Card } from 'antd';
 import SpeechRecognition from '../components/SpeechRecognition';
 import Translation from '../components/Translation';
 import Classification from './Classification';
@@ -40,8 +40,7 @@ class App extends React.Component {
           }
           onStop={this.setFinalTranscript}
         />
-        <div className={styles.component}>
-          <h3>Transcription</h3>
+        <Card title="Transcription" className={styles.component}>
           <Input.TextArea
             autosize
             value={this.state.transcript + this.state.interimTranscript}
@@ -50,23 +49,25 @@ class App extends React.Component {
           <Button className={styles.submitButton} type="primary" onClick={this.setFinalTranscript}>
             Submit
           </Button>
-        </div>
+        </Card>
         <Translation
           className={`${styles.translation} ${styles.component}`}
           data={this.state.transcript}
         />
 
-        <Tabs mode="horizontal">
-          {[
-            { Component: Classification, label: 'Topics' },
-            { Component: Summarization, label: 'Summarization' },
-            { Component: FollowUp, label: 'Follow-up' },
-          ].map(tab => (
-            <Tabs.TabPane tab={tab.label} key={tab.label} forceRender>
-              <tab.Component data={this.state.finalTranscript} />
-            </Tabs.TabPane>
-          ))}
-        </Tabs>
+        <Card>
+          <Tabs mode="horizontal">
+            {[
+              { Component: Classification, label: 'Topics' },
+              { Component: Summarization, label: 'Summarization' },
+              { Component: FollowUp, label: 'Follow-up' },
+            ].map(tab => (
+              <Tabs.TabPane tab={tab.label} key={tab.label} forceRender>
+                <tab.Component data={this.state.finalTranscript} />
+              </Tabs.TabPane>
+            ))}
+          </Tabs>
+        </Card>
       </div>
     );
   }
