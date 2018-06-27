@@ -1,0 +1,17 @@
+.column {
+  padding-right: 100px;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.th {
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid #e8e8e8;
+}
+
+.collapse {
+  background: none;
+}

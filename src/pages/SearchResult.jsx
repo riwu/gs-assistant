@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, List, Icon } from 'antd';
 import queryString from 'query-string';
+import Filter from '../components/Filter';
 import styles from './SearchResult.module.css';
 
 const data = [
@@ -13,6 +14,7 @@ const data = [
     stars: 43,
     likes: 166,
     message: 7,
+    link: 'https://reactjs.org/',
   },
   {
     title: 'AngularJS',
@@ -24,6 +26,7 @@ const data = [
     stars: 22,
     likes: 49,
     message: 3,
+    link: 'https://angularjs.org/',
   },
 ];
 
@@ -37,6 +40,10 @@ const IconText = ({ type, text }) => (
 const SearchResult = props => (
   <div className={styles.container}>
     <Input.Search enterButton defaultValue={queryString.parse(props.location.search).q} />
+    <div className={styles.filterRow}>
+      <span className={styles.resultCount}>About {data.length} filtered results</span>
+      <Filter className={styles.filterButton} />
+    </div>
     <List
       itemLayout="vertical"
       dataSource={data}
@@ -48,7 +55,14 @@ const SearchResult = props => (
             <IconText type="message" text={item.message} />,
           ]}
         >
-          <List.Item.Meta title={<a>{item.title}</a>} description={item.subtitle} />
+          <List.Item.Meta
+            title={
+              <a target="_blank" rel="noopener noreferrer" href={item.link}>
+                {item.title}
+              </a>
+            }
+            description={item.subtitle}
+          />
           {item.description}
         </List.Item>
       )}

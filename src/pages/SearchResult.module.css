@@ -1,3 +1,16 @@
 .container {
   padding: 20px 10%;
 }
+
+.filterRow {
+  margin: 15px 0;
+}
+
+.resultCount {
+  font-size: 1.1em;
+  color: black;
+}
+
+.filterButton {
+  float: right;
+}
