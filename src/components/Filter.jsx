@@ -7,11 +7,19 @@ const rows = [
     date: 'This week',
     department: 'Engineering',
     location: 'Asia Pacific',
+    sort: 'Relevance',
   },
   {
     date: 'This month',
     department: 'Operations',
     location: 'Americans',
+    sort: 'Date',
+  },
+  {
+    date: 'This year',
+    department: 'HCM',
+    location: 'Singapore',
+    sort: 'Rating',
   },
 ];
 
@@ -36,7 +44,7 @@ class Filter extends React.Component {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  {['DATE', 'DEPARTMENT', 'LOCATION'].map(col => (
+                  {['DATE', 'DEPARTMENT', 'LOCATION', 'SORT BY'].map(col => (
                     <th key={col} className={`${styles.column} ${styles.th}`}>
                       {col}
                     </th>
@@ -47,9 +55,11 @@ class Filter extends React.Component {
                 {rows.map(row => (
                   <tr key={row.date}>
                     {Object.values(row).map(field => (
+                      /* eslint-disable */
                       <td key={field} className={styles.column}>
-                        {field}
+                        <a onClick={() => this.setState({ expanded: false })}>{field}</a>
                       </td>
+                      /* eslint-disable */
                     ))}
                   </tr>
                 ))}

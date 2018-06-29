@@ -14,3 +14,11 @@
 .filterButton {
   float: right;
 }
+
+.active {
+  color: #ff8b60;
+}
+
+.icon {
+  margin-right: 8px;
+}
