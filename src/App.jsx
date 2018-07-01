@@ -6,7 +6,7 @@ import SearchResult from './pages/SearchResult';
 import './App.css';
 
 const App = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <Switch>
       <Route exact path="/" component={Home} />
       <Route path="/search" component={SearchResult} />
