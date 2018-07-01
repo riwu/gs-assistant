@@ -5,6 +5,7 @@ import Translation from '../components/Translation';
 import Classification from './Classification';
 import Summarization from './Summarization';
 import FollowUp from './FollowUp';
+import Recommendation from './Recommendation';
 import styles from './Home.module.css';
 
 class App extends React.Component {
@@ -61,6 +62,7 @@ class App extends React.Component {
               { Component: Classification, label: 'Topics' },
               { Component: Summarization, label: 'Summarization' },
               { Component: FollowUp, label: 'Follow-up' },
+              { Component: Recommendation, label: 'Recommendation' },
             ].map(tab => (
               <Tabs.TabPane tab={tab.label} key={tab.label} forceRender>
                 <tab.Component data={this.state.finalTranscript} />
