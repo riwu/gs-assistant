@@ -21,7 +21,7 @@ const BrowserSpeechRecognition =
     window.oSpeechRecognition);
 
 const recognition = new BrowserSpeechRecognition();
-recognition.lang = 'en-GB';
+recognition.lang = 'en-US';
 recognition.interimResults = true;
 
 class SpeechRecognition extends React.Component {
