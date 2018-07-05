@@ -2,7 +2,7 @@
   "name": "speech-daemon",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://riwu.github.io/speech-daemon",
+  "homepage": "https://riwu.github.io/gs-assistant",
   "dependencies": {
     "antd": "^3.6.2",
     "axios": "^0.18.0",
