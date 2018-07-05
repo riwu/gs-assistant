@@ -1,7 +1,6 @@
 import React from 'react';
-import { Card, List } from 'antd';
-
-const data = ['Transcript 1', 'Transcript 2'];
+import { Card, Table } from 'antd';
+import transcripts from './transcripts';
 
 /* eslint-disable */
 const Recommendation = () => (
@@ -10,13 +9,19 @@ const Recommendation = () => (
       <a>28 June meeting at Mapletree Anson</a>
     </Card>
     <Card title="Recommended transcripts" style={{ marginTop: '20px' }}>
-      <List
-        dataSource={data}
-        renderItem={item => (
-          <List.Item>
-            <a>{item}</a>
-          </List.Item>
-        )}
+      <Table
+        pagination={{ hideOnSinglePage: true }}
+        dataSource={transcripts}
+        rowKey="title"
+        columns={[
+          {
+            title: 'Title',
+            dataIndex: 'title',
+            render: title => <a>{title}</a>,
+          },
+          { title: 'Date', dataIndex: 'date' },
+          { title: 'Stars', dataIndex: 'stars' },
+        ]}
       />
     </Card>
   </div>
