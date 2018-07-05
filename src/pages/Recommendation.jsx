@@ -19,6 +19,7 @@ const Recommendation = () => (
             dataIndex: 'title',
             render: title => <a>{title}</a>,
           },
+          { title: 'Author', dataIndex: 'author' },
           { title: 'Date', dataIndex: 'date' },
           { title: 'Stars', dataIndex: 'stars' },
         ]}

@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 import { getClassification } from '../actions/api';
 
 const relevantTopics = [
-  { topic: 'News/Economic Times', relevance: 0.6 },
-  { topic: 'PNB Fraud', relevance: 0.3 },
+  { topic: 'Front-end frameworks', relevance: 0.79 },
+  { topic: 'Back-end frameworks', relevance: 0.79 },
+  { topic: 'Javascript', relevance: 0.43 },
+  { topic: 'RESTful API', relevance: 0.31 },
+  { topic: 'Mobile responsive design', relevance: 0.25 },
 ];
 
 const topics = {
