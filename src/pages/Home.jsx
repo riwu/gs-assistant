@@ -63,8 +63,8 @@ class App extends React.Component {
             {[
               { Component: Classification, label: 'Topics' },
               { Component: Summarization, label: 'Summarization' },
-              { Component: FollowUp, label: 'Follow-up' },
               { Component: Recommendation, label: 'Recommendation' },
+              { Component: FollowUp, label: 'Follow-up' },
             ].map(tab => (
               <Tabs.TabPane tab={tab.label} key={tab.label} forceRender>
                 <tab.Component data={this.state.finalTranscript} />
