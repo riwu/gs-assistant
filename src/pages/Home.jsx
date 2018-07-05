@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Button, Tabs, Card } from 'antd';
+import MeetingDetails from '../components/MeetingDetails';
 import SpeechRecognition from '../components/SpeechRecognition';
 import Translation from '../components/Translation';
 import Classification from './Classification';
@@ -24,6 +25,7 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.container}>
+        <MeetingDetails className={styles.meetingDetails} />
         <SpeechRecognition
           onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
           onChange={(transcript, isFinal) =>
