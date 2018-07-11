@@ -4,18 +4,21 @@ import styles from './Filter.module.css';
 
 const rows = [
   {
+    type: 'Articles',
     date: 'This week',
     department: 'Engineering',
     location: 'Asia Pacific',
     sort: 'Relevance',
   },
   {
+    type: 'Teams',
     date: 'This month',
     department: 'Operations',
     location: 'Americans',
     sort: 'Date',
   },
   {
+    type: '',
     date: 'This year',
     department: 'HCM',
     location: 'Singapore',
@@ -44,7 +47,7 @@ class Filter extends React.Component {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  {['DATE', 'DEPARTMENT', 'LOCATION', 'SORT BY'].map(col => (
+                  {['TYPE', 'DATE', 'DEPARTMENT', 'LOCATION', 'SORT BY'].map(col => (
                     <th key={col} className={`${styles.column} ${styles.th}`}>
                       {col}
                     </th>
@@ -57,9 +60,20 @@ class Filter extends React.Component {
                     {Object.values(row).map(field => (
                       /* eslint-disable */
                       <td key={field} className={styles.column}>
-                        <a onClick={() => this.setState({ expanded: false })}>{field}</a>
+                        {field === 'Articles' /* */ ? (
+                          field
+                        ) : (
+                          <a
+                            onClick={() => {
+                              this.setState({ expanded: false });
+                              this.props.onFilter();
+                            }}
+                          >
+                            {field}
+                          </a>
+                        )}
                       </td>
-                      /* eslint-disable */
+                      /* eslint-enable */
                     ))}
                   </tr>
                 ))}
