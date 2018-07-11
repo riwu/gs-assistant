@@ -4119,6 +4119,10 @@ react-is@^16.4.1:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.1.tgz#d624c4650d2c65dbd52c72622bbf389435d9776e"
 
+react-native-voice@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/react-native-voice/-/react-native-voice-0.2.6.tgz#f6c67fac932a511475ddc4c7b6ff0efeb540cc19"
+
 react-native@0.56.0:
   version "0.56.0"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.56.0.tgz#66686f781ec39a44376aadd4bbc55c8573ab61e5"
