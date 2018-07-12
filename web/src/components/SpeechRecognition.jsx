@@ -1,6 +1,17 @@
 import React from 'react';
 import { Button } from 'antd';
+import io from 'socket.io-client';
 import styles from './SpeechRecognition.module.css';
+
+const socket = io(process.env.REACT_APP_API_URL);
+
+socket.on('connect', () => {
+  console.log('Socket connection established');
+});
+
+socket.on('disconnect', () => {
+  console.log('Socket connection lost');
+});
 
 const synth = window.speechSynthesis;
 const utter = new SpeechSynthesisUtterance();
@@ -31,6 +42,10 @@ class SpeechRecognition extends React.Component {
   };
 
   componentDidMount() {
+    socket.on('message', (msg, isFinal) => {
+      this.props.onChange(msg, isFinal);
+    });
+
     recognition.start();
 
     recognition.onresult = (event) => {
@@ -43,6 +58,7 @@ class SpeechRecognition extends React.Component {
 
       if (!event.results[0].isFinal) {
         if (this.state.started) {
+          socket.send(results, false);
           this.props.onChange(results, false);
         }
         return;
@@ -61,6 +77,7 @@ class SpeechRecognition extends React.Component {
         this.setVoiceCommand('recording reset', true);
         this.props.onReset();
       } else if (this.state.started) {
+        socket.send(results, true);
         this.props.onChange(results, true);
       } else {
         this.setVoiceCommand(results);
