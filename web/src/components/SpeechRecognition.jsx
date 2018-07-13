@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import io from 'socket.io-client';
 import styles from './SpeechRecognition.module.css';
 
-const socket = io(process.env.REACT_APP_API_URL);
+const socket = io(process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.REACT_APP_API_URL);
 
 socket.on('connect', () => {
   console.log('Socket connection established');
