@@ -1,17 +1,19 @@
 .container {
   background: #f4f4f4;
-  padding: 20px 5%;
+  padding: 20px 1%;
   min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 20px 5%;
+  }
 }
 
 .submitButton {
   margin-top: 10px;
 }
 
-.translation {
-  margin-bottom: 20px;
-}
-
-.component {
+.transcription {
   margin: 20px 0;
 }
