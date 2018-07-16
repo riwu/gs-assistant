@@ -11,9 +11,13 @@
 }
 
 .submitButton {
-  margin-top: 10px;
+  float: right;
 }
 
 .transcription {
   margin: 20px 0;
+}
+
+.transcriptionHeader {
+  margin-right: 20px;
 }

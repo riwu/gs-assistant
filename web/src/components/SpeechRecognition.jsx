@@ -110,10 +110,9 @@ class SpeechRecognition extends React.Component {
   };
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Button
           style={{ color: this.state.started ? 'red' : 'green' }}
-          size="large"
           icon={this.state.started ? 'close-circle' : 'play-circle'}
           onClick={() => {
             if (this.state.started) {
@@ -127,7 +126,7 @@ class SpeechRecognition extends React.Component {
         {this.state.command && (
           <span className={styles.commandText}>Received voice command: {this.state.command}</span>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

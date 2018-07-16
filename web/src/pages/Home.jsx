@@ -25,32 +25,43 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.container}>
-        <SpeechRecognition
-          onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
-          onChange={(transcript, isFinal) =>
-            this.setState((prevState) => {
-              if (isFinal) {
-                return {
-                  transcript: `${prevState.transcript}${transcript}. `,
-                  interimTranscript: '',
-                };
-              }
-              return {
-                interimTranscript: transcript,
-              };
-            })
+        <Card
+          className={styles.transcription}
+          title={
+            <React.Fragment>
+              <span className={styles.transcriptionHeader}>Transcription</span>
+              <SpeechRecognition
+                onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
+                onChange={(transcript, isFinal) =>
+                  this.setState((prevState) => {
+                    if (isFinal) {
+                      return {
+                        transcript: `${prevState.transcript}${transcript}. `,
+                        interimTranscript: '',
+                      };
+                    }
+                    return {
+                      interimTranscript: transcript,
+                    };
+                  })
+                }
+                onStop={this.setFinalTranscript}
+              />
+              <Button
+                className={styles.submitButton}
+                type="primary"
+                onClick={this.setFinalTranscript}
+              >
+                Submit
+              </Button>
+            </React.Fragment>
           }
-          onStop={this.setFinalTranscript}
-        />
-        <Card title="Transcription" className={styles.transcription}>
+        >
           <Input.TextArea
             autosize
             value={this.state.transcript + this.state.interimTranscript}
             onChange={e => this.setState({ transcript: e.target.value })}
           />
-          <Button className={styles.submitButton} type="primary" onClick={this.setFinalTranscript}>
-            Submit
-          </Button>
         </Card>
 
         <Card>
