@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Button, Tabs, Card } from 'antd';
-import MeetingDetails from '../components/MeetingDetails';
+import MeetingDetails from './MeetingDetails';
 import SpeechRecognition from '../components/SpeechRecognition';
 import Translation from '../components/Translation';
 import Classification from './Classification';
@@ -25,7 +25,6 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.container}>
-        <MeetingDetails className={styles.meetingDetails} />
         <SpeechRecognition
           onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
           onChange={(transcript, isFinal) =>
@@ -57,10 +56,10 @@ class App extends React.Component {
           className={`${styles.translation} ${styles.component}`}
           data={this.state.transcript}
         />
-
         <Card>
           <Tabs mode="horizontal">
             {[
+              { Component: MeetingDetails, label: 'Description' },
               { Component: Classification, label: 'Topics' },
               { Component: Summarization, label: 'Summarization' },
               { Component: Recommendation, label: 'Recommendation' },
