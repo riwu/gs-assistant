@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Tabs, Card } from 'antd';
+import { Input, Button, Tabs, Card, Switch } from 'antd';
 import MeetingDetails from './MeetingDetails';
 import SpeechRecognition from '../components/SpeechRecognition';
 import Translation from './Translation';
@@ -16,6 +16,7 @@ class App extends React.Component {
       interimTranscript: '',
       transcript: '',
       finalTranscript: '',
+      voiceCommand: true,
     };
     this.setFinalTranscript = this.setFinalTranscript.bind(this);
   }
@@ -31,6 +32,7 @@ class App extends React.Component {
             <React.Fragment>
               <span className={styles.transcriptionHeader}>Transcription</span>
               <SpeechRecognition
+                voiceCommand={this.state.voiceCommand}
                 onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
                 onChange={(transcript, isFinal) =>
                   this.setState((prevState) => {
@@ -63,7 +65,6 @@ class App extends React.Component {
             onChange={e => this.setState({ transcript: e.target.value })}
           />
         </Card>
-
         <Card>
           <Tabs mode="horizontal">
             {[
@@ -82,6 +83,13 @@ class App extends React.Component {
             ))}
           </Tabs>
         </Card>
+        <div className={styles.voiceCommand}>
+          Voice Command{' '}
+          <Switch
+            defaultChecked={this.state.voiceCommand}
+            onChange={checked => this.setState({ voiceCommand: checked })}
+          />
+        </div>
       </div>
     );
   }

@@ -15,9 +15,14 @@
 }
 
 .transcription {
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .transcriptionHeader {
   margin-right: 20px;
+}
+
+.voiceCommand {
+  margin-top: 20px;
+  float: right;
 }
