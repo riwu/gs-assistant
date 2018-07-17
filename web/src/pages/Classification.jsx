@@ -36,8 +36,7 @@ class Classification extends React.Component {
   };
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data) {
-      getClassification(this.props.data).then(data =>
-        this.setState({ categories: data.categories }));
+      getClassification(this.props.data).then(categories => this.setState({ categories }));
     }
   }
   render() {
@@ -66,7 +65,7 @@ class Classification extends React.Component {
           {
             title: 'Category',
             dataIndex: 'name',
-            render: name => <SearchLink query={name.slice(1)} />,
+            render: name => <SearchLink query={name} />,
           }, // eslint-disable-line jsx-a11y/anchor-is-valid
           { title: 'Confidence', dataIndex: 'confidence' },
         ]}

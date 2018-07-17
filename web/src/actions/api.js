@@ -24,7 +24,15 @@ export const getClassification = content =>
       type: 'PLAIN_TEXT',
       content,
     },
-  });
+  }).then(({ categories }) =>
+    categories.map(category => ({
+      ...category,
+      name: category.name
+        .slice(1) // remove leading /
+        .split('/')
+        .slice(-2) // only use last 2 level
+        .join('/'),
+    })));
 
 export const getTranslation = (content, languageCode) =>
   post(`https://translation.googleapis.com/language/translate/v2${GOOGLE_API_KEY_PARAM}&target=${languageCode}&q=${encodeURIComponent(content)}`);

@@ -15,14 +15,11 @@ const FollowUp = (props) => {
     return acc;
   }, {});
 
-  console.log('dates', dates);
-  console.log('for', Object.entries(dates).map(([text, date]) => ({ text, date })));
-
   return (
     <Table
       pagination={{ hideOnSinglePage: true }}
       dataSource={Object.entries(dates).map(([text, date]) => ({ text, date }))}
-      rowKey="date"
+      rowKey="text"
       columns={[
         { title: 'Date', dataIndex: 'text' },
         {
