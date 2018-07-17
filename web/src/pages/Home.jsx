@@ -84,8 +84,9 @@ class App extends React.Component {
           </Tabs>
         </Card>
         <div className={styles.voiceCommand}>
-          Voice Command{' '}
+          <span className={styles.voiceCommandText}>Voice Command</span>
           <Switch
+            className={styles.switch}
             defaultChecked={this.state.voiceCommand}
             onChange={checked => this.setState({ voiceCommand: checked })}
           />

@@ -1,5 +1,5 @@
 .container {
-  background: #f4f4f4;
+  background: #7399c6;
   padding: 20px 1%;
   min-height: 100%;
 }
@@ -25,4 +25,9 @@
 .voiceCommand {
   padding-top: 20px;
   text-align: right;
+}
+
+.voiceCommandText {
+  margin-right: 10px;
+  color: #ffd300;
 }
