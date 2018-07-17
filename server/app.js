@@ -15,7 +15,7 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Socket server running');
+  res.end();
 });
 app.get('/favicon.ico', (req, res) => {
   // for browser request
