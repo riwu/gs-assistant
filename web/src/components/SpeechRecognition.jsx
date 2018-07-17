@@ -123,6 +123,9 @@ class SpeechRecognition extends React.Component {
     }
   };
   render() {
+    const width =
+      window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
     return (
       <React.Fragment>
         <Button
@@ -137,9 +140,10 @@ class SpeechRecognition extends React.Component {
         >
           {this.state.started ? 'Stop recording' : 'Start recording'}
         </Button>
-        {this.state.command && (
-          <span className={styles.commandText}>Received voice command: {this.state.command}</span>
-        )}
+        {this.state.command &&
+          width > 768 && (
+            <span className={styles.commandText}>Received voice command: {this.state.command}</span>
+          )}
       </React.Fragment>
     );
   }
