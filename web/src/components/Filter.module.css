@@ -1,5 +1,11 @@
 .column {
-  padding-right: 100px;
+  padding-right: 50px;
+}
+
+@media (min-width: 1000px) {
+  .column {
+    padding-right: 100px;
+  }
 }
 
 .table {
