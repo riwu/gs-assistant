@@ -32,9 +32,12 @@ const BrowserSpeechRecognition =
     window.msSpeechRecognition ||
     window.oSpeechRecognition);
 
-const recognition = new BrowserSpeechRecognition();
-recognition.lang = 'en-US';
-recognition.interimResults = true;
+let recognition;
+if (BrowserSpeechRecognition) {
+  recognition = new BrowserSpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = true;
+}
 
 class SpeechRecognition extends React.Component {
   state = {
@@ -46,6 +49,8 @@ class SpeechRecognition extends React.Component {
     socket.on('message', (msg, isFinal) => {
       this.props.onChange(msg, isFinal);
     });
+
+    if (!recognition) return;
 
     recognition.start();
 
