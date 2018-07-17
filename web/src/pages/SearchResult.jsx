@@ -41,7 +41,7 @@ const IconText = ({
 }) => (
   <span onClick={onClick}>
     <Icon type={type} className={`${active ? styles.active : ''} ${styles.icon}`} />
-    <span className={active ? styles.active : null}>{text}</span>
+    <span className={`${active ? styles.active : ''} ${styles.iconText}`}>{text}</span>
   </span>
 );
 

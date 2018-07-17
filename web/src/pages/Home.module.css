@@ -23,6 +23,6 @@
 }
 
 .voiceCommand {
-  margin-top: 20px;
-  float: right;
+  padding-top: 20px;
+  text-align: right;
 }

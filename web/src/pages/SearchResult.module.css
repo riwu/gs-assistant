@@ -21,4 +21,9 @@
 
 .icon {
   margin-right: 8px;
+  font-size: 20px;
+}
+
+.iconText {
+  font-size: 15px;
 }
