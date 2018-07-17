@@ -15,14 +15,17 @@ socket.on('disconnect', () => {
 });
 
 const synth = window.speechSynthesis;
-const utter = new SpeechSynthesisUtterance();
-window.speechSynthesis.onvoiceschanged = () => {
-  synth.getVoices().forEach((voice) => {
-    if (voice.name === 'Google US English') {
-      utter.voice = voice;
-    }
-  });
-};
+let utter;
+if (synth) {
+  utter = new SpeechSynthesisUtterance();
+  window.speechSynthesis.onvoiceschanged = () => {
+    synth.getVoices().forEach((voice) => {
+      if (voice.name === 'Google US English') {
+        utter.voice = voice;
+      }
+    });
+  };
+}
 
 const BrowserSpeechRecognition =
   typeof window !== 'undefined' &&
@@ -110,7 +113,7 @@ class SpeechRecognition extends React.Component {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ command: '' }), 3900);
 
-    if (isValid) {
+    if (isValid && utter) {
       utter.text = command;
       synth.speak(utter);
       this.stopRecognition = true;

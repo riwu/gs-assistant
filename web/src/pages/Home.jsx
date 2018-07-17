@@ -62,7 +62,7 @@ class App extends React.Component {
           <Input.TextArea
             autosize
             value={this.state.transcript + this.state.interimTranscript}
-            onChange={e => this.setState({ transcript: e.target.value })}
+            onChange={e => this.setState({ transcript: e.target.value, interimTranscript: '' })}
           />
         </Card>
         <Card>
