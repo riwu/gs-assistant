@@ -102,9 +102,9 @@ class SpeechRecognition extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (recognition) {
-      recognition.lang = this.props.transcriptLanguage;
-    }
+    if (!recognition) return;
+
+    recognition.lang = this.props.transcriptLanguage;
 
     console.log(
       'Speech recog component updated',

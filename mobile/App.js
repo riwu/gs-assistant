@@ -3,24 +3,14 @@ import {
   StyleSheet,
   View,
   Alert,
-  WebView,
   Dimensions,
   Button,
   Platform,
   TextInput,
+  WebView,
 } from 'react-native';
 import Voice from 'react-native-voice';
 import io from 'socket.io-client';
-
-const socket = io('https://g.wangriwu.com');
-
-socket.on('connect', () => {
-  console.log('Socket connection established');
-});
-
-socket.on('disconnect', () => {
-  console.log('Socket connection lost');
-});
 
 const { width } = Dimensions.get('window');
 
@@ -28,6 +18,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Platform.OS === 'ios' ? 20 : 0,
+  },
+  input: {
+    fontSize: 20,
+    margin: 10,
   },
 });
 
@@ -38,6 +32,15 @@ export default class App extends React.Component {
     started: false,
   };
   componentDidMount() {
+    const socket = io('https://g.wangriwu.com');
+    socket.on('connect', () => {
+      console.log('Socket connection established');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Socket connection lost');
+    });
+
     Voice.onSpeechStart = () => console.log('started');
     Voice.onSpeechRecognized = () => console.log('recognized');
     Voice.onSpeechEnd = () => {
@@ -86,6 +89,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput
+          style={styles.input}
           placeholder="Enter your name"
           onChangeText={(text) => {
             this.name = text;
