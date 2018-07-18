@@ -6,11 +6,20 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+const speakers = {};
+
 io.on('connection', (socket) => {
   console.log('connected', socket.id);
   socket.on('message', (...args) => {
-    console.log('broadcasting', args);
-    socket.broadcast.send(...args);
+    let user = args[2];
+    if (!user) {
+      if (!speakers[socket.id]) {
+        speakers[socket.id] = `Speaker ${Object.keys(speakers).length + 1}`;
+      }
+      user = speakers[socket.id];
+    }
+    console.log('broadcasting', args, user);
+    socket.broadcast.send(...args.slice(0, 2), user);
   });
 });
 

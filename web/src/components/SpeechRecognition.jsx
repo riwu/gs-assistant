@@ -49,8 +49,8 @@ class SpeechRecognition extends React.Component {
   };
 
   componentDidMount() {
-    socket.on('message', (msg, isFinal) => {
-      this.props.onChange(msg, isFinal);
+    socket.on('message', (...args) => {
+      this.props.onChange(...args);
     });
 
     if (!recognition) return;
@@ -67,7 +67,7 @@ class SpeechRecognition extends React.Component {
 
       if (!event.results[0].isFinal) {
         if (this.state.started) {
-          socket.send(results, false);
+          this.sendResults(results, false);
           this.props.onChange(results, false);
         }
         return;
@@ -75,7 +75,7 @@ class SpeechRecognition extends React.Component {
 
       if (!this.props.voiceCommand) {
         if (this.state.started) {
-          socket.send(results, true);
+          this.sendResults(results, true);
           this.props.onChange(results, true);
         }
         return;
@@ -94,7 +94,7 @@ class SpeechRecognition extends React.Component {
         this.setVoiceCommand('recording reset', true);
         this.props.onReset();
       } else if (this.state.started) {
-        socket.send(results, true);
+        this.sendResults(results, true);
         this.props.onChange(results, true);
       } else {
         this.setVoiceCommand(results);
@@ -125,6 +125,11 @@ class SpeechRecognition extends React.Component {
       };
     }
   };
+
+  sendResults(...args) {
+    socket.send(...args, this.props.user);
+  }
+
   render() {
     const width =
       window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

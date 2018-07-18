@@ -32,13 +32,14 @@ class App extends React.Component {
             <React.Fragment>
               <span className={styles.transcriptionHeader}>Transcription</span>
               <SpeechRecognition
+                user={this.props.location.search.slice(3)}
                 voiceCommand={this.state.voiceCommand}
                 onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
-                onChange={(transcript, isFinal) =>
+                onChange={(transcript, isFinal, user) =>
                   this.setState((prevState) => {
                     if (isFinal) {
                       return {
-                        transcript: `${prevState.transcript}${transcript}. `,
+                        transcript: `${prevState.transcript}${`${user}: ${transcript}`}. `,
                         interimTranscript: '',
                       };
                     }
