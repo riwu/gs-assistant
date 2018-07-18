@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Table } from 'antd';
-import transcripts from './transcripts';
+import transcripts from '../data/transcripts';
 
 /* eslint-disable */
 const Recommendation = () => (

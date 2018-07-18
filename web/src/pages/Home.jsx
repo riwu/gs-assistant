@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Tabs, Card, Switch } from 'antd';
+import { Input, Button, Tabs, Card, Switch, Select } from 'antd';
 import MeetingDetails from './MeetingDetails';
 import SpeechRecognition from '../components/SpeechRecognition';
 import Translation from './Translation';
@@ -8,6 +8,7 @@ import Summarization from './Summarization';
 import FollowUp from './FollowUp';
 import Recommendation from './Recommendation';
 import styles from './Home.module.css';
+import languages from '../data/languages.json';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends React.Component {
       user: null,
       finalTranscript: '',
       voiceCommand: false,
+      transcriptLanguage: Object.keys(languages)[0],
     };
     this.setFinalTranscript = this.setFinalTranscript.bind(this);
   }
@@ -31,8 +33,18 @@ class App extends React.Component {
           className={styles.transcription}
           title={
             <React.Fragment>
-              <span className={styles.transcriptionHeader}>Transcription</span>
+              <span>Transcription</span>
+              <Select
+                className={styles.select}
+                value={this.state.transcriptLanguage}
+                onChange={code => this.setState({ transcriptLanguage: code })}
+              >
+                {Object.entries(languages).map(([code, label]) => (
+                  <Select.Option key={code}>{label}</Select.Option>
+                ))}
+              </Select>
               <SpeechRecognition
+                transcriptLanguage={this.state.transcriptLanguage}
                 user={this.props.location.search.slice(3)}
                 voiceCommand={this.state.voiceCommand}
                 onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
@@ -75,16 +87,19 @@ class App extends React.Component {
           <Tabs mode="horizontal">
             {[
               { Component: MeetingDetails, label: 'Description' },
-              { Component: Translation, label: 'Translation', data: this.state.transcript },
+              {
+                Component: Translation,
+                label: 'Translation',
+                data: this.state.transcript,
+                transcriptLanguage: this.state.transcriptLanguage,
+              },
               { Component: Classification, label: 'Topics' },
               { Component: Summarization, label: 'Summarization' },
               { Component: Recommendation, label: 'Recommendation' },
               { Component: FollowUp, label: 'Follow-up' },
-            ].map(tab => (
-              <Tabs.TabPane tab={tab.label} key={tab.label} forceRender>
-                <tab.Component
-                  data={tab.data !== undefined ? tab.data : this.state.finalTranscript}
-                />
+            ].map(({ label, Component, ...otherProps }) => (
+              <Tabs.TabPane tab={label} key={label} forceRender>
+                <Component data={this.state.finalTranscript} {...otherProps} />
               </Tabs.TabPane>
             ))}
           </Tabs>

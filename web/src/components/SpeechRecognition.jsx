@@ -38,7 +38,6 @@ const BrowserSpeechRecognition =
 let recognition;
 if (BrowserSpeechRecognition) {
   recognition = new BrowserSpeechRecognition();
-  recognition.lang = 'en-US';
   recognition.interimResults = true;
 }
 
@@ -49,6 +48,8 @@ class SpeechRecognition extends React.Component {
   };
 
   componentDidMount() {
+    recognition.lang = this.props.transcriptLanguage;
+
     socket.on('message', (...args) => {
       this.props.onChange(...args);
     });
@@ -101,6 +102,8 @@ class SpeechRecognition extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    recognition.lang = this.props.transcriptLanguage;
+
     console.log(
       'Speech recog component updated',
       this.state.started,

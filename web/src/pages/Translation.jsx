@@ -1,21 +1,32 @@
 import React from 'react';
 import { Select } from 'antd';
 import { getTranslation } from '../actions/api';
+import languages from '../data/languages.json';
 
-const LANGUAGES = [
-  { code: 'zh-CN', label: 'Chinese' },
-  { code: 'ta', label: 'Tamil' },
-  { code: 'hi', label: 'Hindi' },
-];
+const getTranslatingLanguages = transcriptLanguage =>
+  Object.entries(languages).filter(([code]) => code !== transcriptLanguage);
 
 class Translation extends React.Component {
-  state = {
-    selectedLanguage: LANGUAGES[0].code,
-    translations: {},
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedLanguage: getTranslatingLanguages(props.transcriptLanguage)[0][0],
+      translations: {},
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.transcriptLanguage !== state.selectedLanguage) {
+      return null;
+    }
+    return {
+      selectedLanguage: getTranslatingLanguages(props.transcriptLanguage)[0][0],
+    };
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data && this.props.data) {
-      LANGUAGES.forEach(({ code }) =>
+      Object.keys(languages).forEach(code =>
         getTranslation(this.props.data, code).then((translation) => {
           this.setState(({ translations }) => ({
             translations: {
@@ -26,7 +37,9 @@ class Translation extends React.Component {
         }));
     }
   }
+
   render() {
+    const translatingLanguages = getTranslatingLanguages(this.props.transcriptLanguage);
     return (
       <React.Fragment>
         {this.props.data &&
@@ -35,11 +48,11 @@ class Translation extends React.Component {
             .map((row, i) => <div key={i}>{row}</div>)}
         <br />
         <Select
-          defaultValue={LANGUAGES[0].code}
+          value={this.state.selectedLanguage}
           onChange={code => this.setState({ selectedLanguage: code })}
         >
-          {LANGUAGES.map(language => (
-            <Select.Option key={language.code}>{language.label}</Select.Option>
+          {translatingLanguages.map(([code, label]) => (
+            <Select.Option key={code}>{label}</Select.Option>
           ))}
         </Select>
       </React.Fragment>

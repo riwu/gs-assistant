@@ -3,7 +3,7 @@ import { Input, List, Icon } from 'antd';
 import queryString from 'query-string';
 import Filter from '../components/Filter';
 import styles from './SearchResult.module.css';
-import transcripts from './transcripts';
+import transcripts from '../data/transcripts';
 
 const teams = [
   {
