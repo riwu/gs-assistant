@@ -68,7 +68,6 @@ class SpeechRecognition extends React.Component {
       if (!event.results[0].isFinal) {
         if (this.state.started) {
           this.sendResults(results, false);
-          this.props.onChange(results, false);
         }
         return;
       }
@@ -76,7 +75,6 @@ class SpeechRecognition extends React.Component {
       if (!this.props.voiceCommand) {
         if (this.state.started) {
           this.sendResults(results, true);
-          this.props.onChange(results, true);
         }
         return;
       }
@@ -95,7 +93,6 @@ class SpeechRecognition extends React.Component {
         this.props.onReset();
       } else if (this.state.started) {
         this.sendResults(results, true);
-        this.props.onChange(results, true);
       } else {
         this.setVoiceCommand(results);
       }
@@ -128,6 +125,7 @@ class SpeechRecognition extends React.Component {
 
   sendResults(...args) {
     socket.send(...args, this.props.user);
+    this.props.onChange(...args, this.props.user || undefined);
   }
 
   render() {

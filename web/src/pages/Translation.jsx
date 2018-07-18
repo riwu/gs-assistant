@@ -16,11 +16,11 @@ class Translation extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.data !== this.props.data && this.props.data) {
       LANGUAGES.forEach(({ code }) =>
-        getTranslation(this.props.data, code).then(({ data }) => {
+        getTranslation(this.props.data, code).then((translation) => {
           this.setState(({ translations }) => ({
             translations: {
               ...translations,
-              [code]: (((data || {}).translations || [])[0] || {}).translatedText,
+              [code]: translation,
             },
           }));
         }));
@@ -29,7 +29,10 @@ class Translation extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div>{this.props.data && this.state.translations[this.state.selectedLanguage]}</div>
+        {this.props.data &&
+          (this.state.translations[this.state.selectedLanguage] || '')
+            .split('<br>')
+            .map((row, i) => <div key={i}>{row}</div>)}
         <br />
         <Select
           defaultValue={LANGUAGES[0].code}

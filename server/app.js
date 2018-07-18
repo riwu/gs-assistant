@@ -13,9 +13,13 @@ io.on('connection', (socket) => {
   socket.on('message', (...args) => {
     let user = args[2];
     if (!user) {
+      const time = Date.now();
       if (!speakers[socket.id]) {
-        speakers[socket.id] = `Speaker ${Object.keys(speakers).length + 1}`;
+        const speakerValues = Object.values(speakers);
+        const expiredSpeaker = speakerValues.find(({ lastActivity }) => time - lastActivity > 60000 * 60);
+        speakers[socket.id] = { label: expiredSpeaker || `Speaker ${speakerValues.length + 1}` };
       }
+      speakers[socket.id].lastActivity = time;
       user = speakers[socket.id];
     }
     console.log('broadcasting', args, user);

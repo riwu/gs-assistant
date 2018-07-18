@@ -41,16 +41,23 @@ const getGoogleTranslation = (content, languageCode) =>
   post(`https://translation.googleapis.com/language/translate/v2${GOOGLE_API_KEY_PARAM}&target=${languageCode}&q=${encodeURIComponent(content)}`);
 
 let canAccessGoogleTranslate = false;
-getGoogleTranslation('test', 'zh-CN').then(() => {
-  console.log('Can access google translate');
+
+if (process.env.NODE_ENV === 'development') {
   canAccessGoogleTranslate = true;
-});
+} else {
+  getGoogleTranslation('test', 'zh-CN').then(() => {
+    console.log('Can access google translate');
+    canAccessGoogleTranslate = true;
+  });
+}
 
 export const getTranslation = (content, languageCode) => {
-  if (canAccessGoogleTranslate) {
-    return getGoogleTranslation(content, languageCode);
-  }
-  return post(`${BASE_URL}/translate`, { content, languageCode });
+  console.log('content', content);
+  const formattedContent = content.replace(/\n/g, '<br>');
+  const response = canAccessGoogleTranslate
+    ? getGoogleTranslation(formattedContent, languageCode)
+    : post(`${BASE_URL}/translate`, { content: formattedContent, languageCode });
+  return response.then(({ data }) => (((data || {}).translations || [])[0] || {}).translatedText || '');
 };
 
 export const speechToText = content =>

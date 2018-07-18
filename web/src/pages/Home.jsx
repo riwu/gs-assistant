@@ -15,6 +15,7 @@ class App extends React.Component {
     this.state = {
       interimTranscript: '',
       transcript: '',
+      user: null,
       finalTranscript: '',
       voiceCommand: true,
     };
@@ -37,14 +38,18 @@ class App extends React.Component {
                 onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
                 onChange={(transcript, isFinal, user = 'Me') =>
                   this.setState((prevState) => {
+                    console.log('user', prevState.user, user);
+                    const newLine = prevState.transcript.trim() ? '\n' : '';
+                    const userStr = prevState.user === user ? '' : `${newLine + user}: `;
                     if (isFinal) {
                       return {
-                        transcript: `${prevState.transcript}${`${user}: ${transcript}`}. `,
+                        transcript: `${prevState.transcript + userStr + transcript}. `,
                         interimTranscript: '',
+                        user,
                       };
                     }
                     return {
-                      interimTranscript: transcript,
+                      interimTranscript: userStr + transcript,
                     };
                   })
                 }
