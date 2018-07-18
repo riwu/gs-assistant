@@ -1,5 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Alert, WebView, Dimensions, Button, Platform } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Alert,
+  WebView,
+  Dimensions,
+  Button,
+  Platform,
+  TextInput,
+} from 'react-native';
 import Voice from 'react-native-voice';
 import io from 'socket.io-client';
 
@@ -34,7 +43,7 @@ export default class App extends React.Component {
     Voice.onSpeechEnd = () => {
       console.log('ended');
       if (this.value) {
-        socket.send(this.value, true);
+        socket.send(this.value, true, this.name);
       }
       startTranscription()
         .then(() => console.log('restarted'))
@@ -44,14 +53,24 @@ export default class App extends React.Component {
       console.log('result', e);
       this.value = e.value;
       if (e.value) {
-        socket.send(e.value, false);
+        socket.send(e.value, false, this.name);
       }
     };
     Voice.onSpeechResults = e => console.log('final result', e);
     Voice.onSpeechError = (e) => {
       console.log('err', e);
       if (!e.error.message.includes('No speech input')) {
-        Alert.alert('Error', e.error.message);
+        if (!this.alerted) {
+          Alert.alert('Error', e.error.message, [
+            {
+              text: 'OK',
+              onPress: () => {
+                this.alerted = false;
+              },
+            },
+          ]);
+        }
+        this.alerted = true;
       }
       startTranscription()
         .then(() => console.log('restarted'))
@@ -66,6 +85,12 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <TextInput
+          placeholder="Enter your name"
+          onChangeText={(text) => {
+            this.name = text;
+          }}
+        />
         <Button
           onPress={() => {
             if (this.state.started) {

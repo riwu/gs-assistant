@@ -35,7 +35,7 @@ class App extends React.Component {
                 user={this.props.location.search.slice(3)}
                 voiceCommand={this.state.voiceCommand}
                 onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
-                onChange={(transcript, isFinal, user) =>
+                onChange={(transcript, isFinal, user = 'Me') =>
                   this.setState((prevState) => {
                     if (isFinal) {
                       return {
