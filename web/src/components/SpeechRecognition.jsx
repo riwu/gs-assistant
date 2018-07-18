@@ -55,7 +55,9 @@ class SpeechRecognition extends React.Component {
 
     if (!recognition) return;
 
-    recognition.start();
+    if (this.props.voiceCommand) {
+      recognition.start();
+    }
 
     recognition.onresult = (event) => {
       let results = '';
@@ -68,13 +70,6 @@ class SpeechRecognition extends React.Component {
       if (!event.results[0].isFinal) {
         if (this.state.started) {
           this.sendResults(results, false);
-        }
-        return;
-      }
-
-      if (!this.props.voiceCommand) {
-        if (this.state.started) {
-          this.sendResults(results, true);
         }
         return;
       }
@@ -99,10 +94,26 @@ class SpeechRecognition extends React.Component {
     };
 
     recognition.onend = () => {
-      if (!this.stopRecognition) {
+      if (!this.stoppingRecognition) {
         recognition.start();
       }
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(
+      'Speech recog component updated',
+      this.state.started,
+      this.props.voiceCommand,
+      prevProps.voiceCommand,
+    );
+    if (!this.state.started) {
+      if (this.props.voiceCommand) {
+        this.startRecognition();
+      } else {
+        this.stopRecognition();
+      }
+    }
   }
 
   setVoiceCommand = (command, isValid) => {
@@ -113,15 +124,27 @@ class SpeechRecognition extends React.Component {
     if (isValid && utter) {
       utter.text = command;
       synth.speak(utter);
-      this.stopRecognition = true;
-      recognition.abort();
+      this.stopRecognition();
       utter.onend = () => {
         console.log('ended');
-        this.stopRecognition = false;
-        recognition.start();
+        this.startRecognition();
       };
     }
   };
+
+  startRecognition() {
+    this.stoppingRecognition = false;
+    try {
+      recognition.start();
+    } catch (e) {
+      console.log('Failed to start recognition', e);
+    }
+  }
+
+  stopRecognition() {
+    this.stoppingRecognition = true;
+    recognition.stop();
+  }
 
   sendResults(...args) {
     socket.send(...args, this.props.user);
@@ -140,6 +163,8 @@ class SpeechRecognition extends React.Component {
           onClick={() => {
             if (this.state.started) {
               this.props.onStop();
+            } else {
+              this.startRecognition();
             }
             this.setState(prevState => ({ started: !prevState.started }));
           }}

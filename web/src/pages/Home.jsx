@@ -17,7 +17,7 @@ class App extends React.Component {
       transcript: '',
       user: null,
       finalTranscript: '',
-      voiceCommand: true,
+      voiceCommand: false,
     };
     this.setFinalTranscript = this.setFinalTranscript.bind(this);
   }
