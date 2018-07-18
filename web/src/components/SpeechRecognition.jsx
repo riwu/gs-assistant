@@ -48,13 +48,13 @@ class SpeechRecognition extends React.Component {
   };
 
   componentDidMount() {
-    recognition.lang = this.props.transcriptLanguage;
-
     socket.on('message', (...args) => {
       this.props.onChange(...args);
     });
 
     if (!recognition) return;
+
+    recognition.lang = this.props.transcriptLanguage;
 
     if (this.props.voiceCommand) {
       recognition.start();
@@ -102,7 +102,9 @@ class SpeechRecognition extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    recognition.lang = this.props.transcriptLanguage;
+    if (recognition) {
+      recognition.lang = this.props.transcriptLanguage;
+    }
 
     console.log(
       'Speech recog component updated',
