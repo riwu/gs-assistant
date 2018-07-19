@@ -25,8 +25,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const startTranscription = () => Voice.start('en-US');
-
 export default class App extends React.Component {
   state = {
     started: false,
@@ -48,41 +46,38 @@ export default class App extends React.Component {
       if (this.value) {
         socket.send(this.value, true, this.name);
       }
-      startTranscription()
+      this.startTranscription()
         .then(() => console.log('restarted'))
         .catch(e => Alert.alert('Failed to start recording', e.message));
     };
     Voice.onSpeechPartialResults = (e) => {
       console.log('result', e);
-      this.value = e.value;
-      if (e.value) {
-        socket.send(e.value, false, this.name);
+      const [value] = e.value;
+      this.value = value;
+      if (this.value) {
+        socket.send(this.value, false, this.name);
       }
     };
     Voice.onSpeechResults = e => console.log('final result', e);
     Voice.onSpeechError = (e) => {
       console.log('err', e);
-      if (!e.error.message.includes('No speech input')) {
-        if (!this.alerted) {
-          Alert.alert('Error', e.error.message, [
-            {
-              text: 'OK',
-              onPress: () => {
-                this.alerted = false;
-              },
-            },
-          ]);
-        }
-        this.alerted = true;
+      if (e.error.message.includes('No speech input')) {
+        this.startTranscription()
+          .then(() => console.log('restarted'))
+          .catch(err => Alert.alert('Failed to start recording', err.message));
+      } else {
+        Alert.alert('Error', e.error.message);
       }
-      startTranscription()
-        .then(() => console.log('restarted'))
-        .catch(err => Alert.alert('Failed to start recording', err.message));
     };
   }
 
   componentWillUnmount() {
     Voice.destroy().then(Voice.removeAllListeners);
+  }
+
+  startTranscription() {
+    if (this.shouldStop) return Promise.resolve();
+    return Voice.start('en-US');
   }
 
   render() {
@@ -98,11 +93,13 @@ export default class App extends React.Component {
         <Button
           onPress={() => {
             if (this.state.started) {
+              this.shouldStop = true;
               Voice.stop()
                 .then(() => this.setState({ started: false }))
                 .catch(e => Alert.alert('Failed to stop recording', e.message));
             } else {
-              startTranscription()
+              this.shouldStop = false;
+              this.startTranscription()
                 .then(() => this.setState({ started: true }))
                 .catch(e => Alert.alert('Failed to start recording', e.message));
             }

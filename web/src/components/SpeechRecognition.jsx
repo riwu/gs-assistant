@@ -14,6 +14,10 @@ socket.on('disconnect', () => {
   console.log('Socket connection lost');
 });
 
+socket.on('connect_error', (err) => {
+  alert(`Socket connection failed: ${err.message}`);
+});
+
 const synth = window.speechSynthesis;
 let utter;
 if (synth) {

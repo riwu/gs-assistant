@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
       user = speakers[socket.id];
     }
     console.log('broadcasting', args, user.label);
-    socket.broadcast.send(...args.slice(0, 2), user);
+    socket.broadcast.send(...args.slice(0, 2), user.label);
   });
 });
 
