@@ -77,6 +77,7 @@ export default class App extends React.Component {
       const name = (this.name || '').trim() || DeviceInfo.getDeviceName();
       console.log('name', name);
       socket.send(this.value, isFinal, name);
+      this.value = '';
     }
   }
 
