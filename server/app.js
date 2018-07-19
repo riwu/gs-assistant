@@ -20,9 +20,9 @@ io.on('connection', (socket) => {
         speakers[socket.id] = { label: expiredSpeaker || `Speaker ${speakerValues.length + 1}` };
       }
       speakers[socket.id].lastActivity = time;
-      user = speakers[socket.id].label;
+      user = speakers[socket.id];
     }
-    console.log('broadcasting', args, user);
+    console.log('broadcasting', args, user.label);
     socket.broadcast.send(...args.slice(0, 2), user);
   });
 });
