@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.4.1",
     "react-native": "0.56.0",
+    "react-native-device-info": "^0.21.5",
     "react-native-voice": "^0.2.6",
     "socket.io-client": "^2.1.1"
   },

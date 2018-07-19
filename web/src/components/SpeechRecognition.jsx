@@ -53,6 +53,7 @@ class SpeechRecognition extends React.Component {
 
   componentDidMount() {
     socket.on('message', (...args) => {
+      console.log('Received message: ', args);
       this.props.onChange(...args);
     });
 

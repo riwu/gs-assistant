@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Voice from 'react-native-voice';
 import io from 'socket.io-client';
+import DeviceInfo from 'react-native-device-info';
 
 const { width } = Dimensions.get('window');
 
@@ -43,9 +44,7 @@ export default class App extends React.Component {
     Voice.onSpeechRecognized = () => console.log('recognized');
     Voice.onSpeechEnd = () => {
       console.log('ended');
-      if (this.value) {
-        socket.send(this.value, true, this.name);
-      }
+      this.sendText(socket, true);
       this.startTranscription()
         .then(() => console.log('restarted'))
         .catch(e => Alert.alert('Failed to start recording', e.message));
@@ -54,9 +53,7 @@ export default class App extends React.Component {
       console.log('result', e);
       const [value] = e.value;
       this.value = value;
-      if (this.value) {
-        socket.send(this.value, false, this.name);
-      }
+      this.sendText(socket, false);
     };
     Voice.onSpeechResults = e => console.log('final result', e);
     Voice.onSpeechError = (e) => {
@@ -73,6 +70,14 @@ export default class App extends React.Component {
 
   componentWillUnmount() {
     Voice.destroy().then(Voice.removeAllListeners);
+  }
+
+  sendText(socket, isFinal) {
+    if (this.value) {
+      const name = (this.name || '').trim() || DeviceInfo.getDeviceName();
+      console.log('name', name);
+      socket.send(this.value, isFinal, name);
+    }
   }
 
   startTranscription() {
