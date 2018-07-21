@@ -12,6 +12,8 @@ import {
 import Voice from 'react-native-voice';
 import io from 'socket.io-client';
 import DeviceInfo from 'react-native-device-info';
+import axios from 'axios';
+import env from './.env.json';
 
 const { width } = Dimensions.get('window');
 
@@ -31,7 +33,12 @@ export default class App extends React.Component {
     started: false,
   };
   componentDidMount() {
-    const socket = io('https://g.wangriwu.com');
+    axios.post(env.SESSION_URL, {
+      page: DeviceInfo.getDeviceName(),
+      referrer: 'GS Assistant',
+    });
+
+    const socket = io(env.SOCKET_URL);
     socket.on('connect', () => {
       console.log('Socket connection established');
     });
@@ -44,7 +51,6 @@ export default class App extends React.Component {
     Voice.onSpeechRecognized = () => console.log('recognized');
     Voice.onSpeechEnd = () => {
       console.log('ended');
-      this.sendText(socket, true);
       this.startTranscription()
         .then(() => console.log('restarted'))
         .catch(e => Alert.alert('Failed to start recording', e.message));
@@ -52,8 +58,7 @@ export default class App extends React.Component {
     Voice.onSpeechPartialResults = (e) => {
       console.log('result', e);
       const [value] = e.value;
-      this.value = value;
-      this.sendText(socket, false);
+      this.sendText(socket, value, false);
     };
     Voice.onSpeechResults = e => console.log('final result', e);
     Voice.onSpeechError = (e) => {
@@ -72,12 +77,11 @@ export default class App extends React.Component {
     Voice.destroy().then(Voice.removeAllListeners);
   }
 
-  sendText(socket, isFinal) {
-    if (this.value) {
+  sendText(socket, value, isFinal) {
+    if (value) {
       const name = (this.name || '').trim() || DeviceInfo.getDeviceName();
       console.log('name', name);
-      socket.send(this.value, isFinal, name);
-      this.value = '';
+      socket.send(value, isFinal, name);
     }
   }
 
@@ -90,6 +94,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput
+          autoCorrect={false}
           style={styles.input}
           placeholder="Enter your name"
           onChangeText={(text) => {

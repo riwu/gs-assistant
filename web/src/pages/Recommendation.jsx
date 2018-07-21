@@ -6,7 +6,7 @@ import transcripts from '../data/transcripts';
 const Recommendation = () => (
   <div>
     <Card title="Previous transcript">
-      <a>28 June meeting at Mapletree Anson</a>
+      <a>Thu, 19 July 3pm - 4.15pm: Intern Group Project Dry Run</a>
     </Card>
     <Card title="Recommended transcripts" style={{ marginTop: '20px' }}>
       <Table
