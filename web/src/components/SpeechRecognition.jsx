@@ -143,11 +143,17 @@ class SpeechRecognition extends React.Component {
   };
 
   startRecognition() {
+    if (!recognition) {
+      alert('Speech recognition not supported on this browser, please use the mobile app or a supported browser');
+      return false;
+    }
     this.stoppingRecognition = false;
     try {
       recognition.start();
+      return true;
     } catch (e) {
       console.log('Failed to start recognition', e);
+      return false;
     }
   }
 
@@ -156,9 +162,10 @@ class SpeechRecognition extends React.Component {
     recognition.stop();
   }
 
-  sendResults(...args) {
-    socket.send(...args, this.props.user);
-    this.props.onChange(...args, this.props.user || undefined);
+  sendResults(results, isFinal) {
+    if (!(results || '').trim()) return;
+    socket.send(results, isFinal, this.props.user);
+    this.props.onChange(results, isFinal, this.props.user || undefined);
   }
 
   render() {
@@ -173,9 +180,7 @@ class SpeechRecognition extends React.Component {
           onClick={() => {
             if (this.state.started) {
               this.props.onStop();
-            } else {
-              this.startRecognition();
-            }
+            } else if (!this.startRecognition()) return;
             this.setState(prevState => ({ started: !prevState.started }));
           }}
         >

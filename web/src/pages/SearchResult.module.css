@@ -15,15 +15,17 @@
   float: right;
 }
 
-.active {
-  color: #ff8b60;
-}
-
 .icon {
   margin-right: 8px;
   font-size: 20px;
+  color: #4c4c4c;
 }
 
 .iconText {
   font-size: 15px;
+  color: #4c4c4c;
+}
+
+.active {
+  color: #ff8b60;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Button, Tabs, Card, Switch, Select } from 'antd';
+import queryString from 'query-string';
 import MeetingDetails from './MeetingDetails';
 import SpeechRecognition from '../components/SpeechRecognition';
 import Translation from './Translation';
@@ -45,7 +46,7 @@ class App extends React.Component {
               </Select>
               <SpeechRecognition
                 transcriptLanguage={this.state.transcriptLanguage}
-                user={this.props.location.search.slice(3)}
+                user={queryString.parse(this.props.location.search).u}
                 voiceCommand={this.state.voiceCommand}
                 onReset={() => this.setState({ transcript: '', interimTranscript: '' })}
                 onChange={(transcript, isFinal, user = 'Me') =>
@@ -53,7 +54,7 @@ class App extends React.Component {
                     console.log('user', prevState.user, user);
                     const newLine = prevState.transcript.trim() ? '\n' : '';
                     const userStr = prevState.user === user ? '' : `${newLine + user}: `;
-                    if (isFinal) {
+                    if (isFinal || user !== prevState.user) {
                       return {
                         transcript: `${prevState.transcript + userStr + transcript}. `,
                         interimTranscript: '',

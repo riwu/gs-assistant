@@ -40,8 +40,8 @@ const IconText = ({
   type, text, onClick, active,
 }) => (
   <span onClick={onClick}>
-    <Icon type={type} className={`${active ? styles.active : ''} ${styles.icon}`} />
-    <span className={`${active ? styles.active : ''} ${styles.iconText}`}>{text}</span>
+    <Icon type={type} className={`${styles.icon} ${active ? styles.active : ''}`} />
+    <span className={`${styles.iconText} ${active ? styles.active : ''}`}>{text}</span>
   </span>
 );
 

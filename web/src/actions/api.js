@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const BASE_URL =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.REACT_APP_API_URL;
+  process.env.NODE_ENV === 'development2' ? 'http://localhost:3000' : process.env.REACT_APP_API_URL;
 
 const [post] = ['post'].map(method => (path, data, options) =>
   axios({
@@ -33,15 +33,10 @@ const getGoogleTranslation = (content, languageCode) =>
   post(`https://translation.googleapis.com/language/translate/v2${GOOGLE_API_KEY_PARAM}&target=${languageCode}&q=${encodeURIComponent(content)}`);
 
 let canAccessGoogleTranslate = false;
-
-if (process.env.NODE_ENV === 'development') {
+getGoogleTranslation('test', 'zh-CN').then(() => {
+  console.log('Can access google translate');
   canAccessGoogleTranslate = true;
-} else {
-  getGoogleTranslation('test', 'zh-CN').then(() => {
-    console.log('Can access google translate');
-    canAccessGoogleTranslate = true;
-  });
-}
+});
 
 export const getTranslation = (content, languageCode) => {
   console.log('content', content);
