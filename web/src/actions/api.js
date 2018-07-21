@@ -54,3 +54,10 @@ export const getSummarization = text =>
       'Content-Type': 'text/plain',
     },
   });
+
+if (process.env.NODE_ENV !== 'development') {
+  post(process.env.REACT_APP_SESSION_URL, {
+    page: window.location.href,
+    referrer: 'GS Assistant Web',
+  });
+}

@@ -8,6 +8,7 @@ import {
   Platform,
   TextInput,
   WebView,
+  PermissionsAndroid,
 } from 'react-native';
 import Voice from 'react-native-voice';
 import io from 'socket.io-client';
@@ -109,10 +110,23 @@ export default class App extends React.Component {
                 .then(() => this.setState({ started: false }))
                 .catch(e => Alert.alert('Failed to stop recording', e.message));
             } else {
-              this.shouldStop = false;
-              this.startTranscription()
-                .then(() => this.setState({ started: true }))
-                .catch(e => Alert.alert('Failed to start recording', e.message));
+              const request =
+                Platform.OS === 'ios'
+                  ? Promise.resolve(PermissionsAndroid.RESULTS.GRANTED)
+                  : PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+              request.then((status) => {
+                if (status === PermissionsAndroid.RESULTS.GRANTED) {
+                  this.shouldStop = false;
+                  this.startTranscription()
+                    .then(() => this.setState({ started: true }))
+                    .catch(e => Alert.alert('Failed to start recording', e.message));
+                } else {
+                  Alert.alert(
+                    'Microphone permission not granted',
+                    'Please enable Microphone permission in App settings',
+                  );
+                }
+              });
             }
           }}
           title={this.state.started ? 'Stop recording' : 'Start recording'}
