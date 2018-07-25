@@ -169,6 +169,15 @@ class SpeechRecognition extends React.Component {
   }
 
   render() {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const ios = /iphone|ipod|ipad/.test(userAgent);
+    if (ios) {
+      const safari = /safari/.test(userAgent);
+      if (!safari) {
+        return null;
+      }
+    }
+
     const width =
       window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
