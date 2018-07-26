@@ -54,7 +54,7 @@ class App extends React.Component {
                     console.log('user', prevState.user, user);
                     const newLine = prevState.transcript.trim() ? '\n' : '';
                     const userStr = prevState.user === user ? '' : `${newLine + user}: `;
-                    if (isFinal || user !== prevState.user) {
+                    if (isFinal || (prevState.user && user !== prevState.user)) {
                       return {
                         transcript: `${prevState.transcript + userStr + transcript}. `,
                         interimTranscript: '',
