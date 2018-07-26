@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
       if (!speakers[socket.id]) {
         const speakerValues = Object.values(speakers);
         const expiredSpeaker = speakerValues.find(({ lastActivity }) => time - lastActivity > 60000 * 60);
-        speakers[socket.id] = { label: expiredSpeaker || `Speaker ${speakerValues.length + 1}` };
+        speakers[socket.id] = expiredSpeaker || { label: `Speaker ${speakerValues.length + 1}` };
       }
       speakers[socket.id].lastActivity = time;
       user = speakers[socket.id].label;
